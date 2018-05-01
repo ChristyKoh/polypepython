@@ -2,9 +2,11 @@ package polypepython1;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-public class Polypeptide {
+public class Polypeptide{
 	
 	private ArrayList<Amino> polyPoints = new ArrayList<Amino>();
 	final int STARTX = 100, STARTY = 100, SIZE = 4;
@@ -13,20 +15,24 @@ public class Polypeptide {
 	public Polypeptide() {
 		//add head
 		head = new Point(STARTX, STARTY, Color.orange);
-		/*for(int i=0; i<len; i++) {
-			polyPoints.add(new Amino("Methionine", STARTX - i*SIZE, STARTY, Color.white));
-		}*/
 	}
 	
 	public ArrayList<Amino> get() {
 		return polyPoints;
 	}
 	
-	public void add(Amino a) {
-		polyPoints.add(a);
-	}
+	public int getXDir() {return head.getXDir();}
+	
+	public void setXDir(int x) {head.setXDir(x);}
+	
+	public int getYDir() {return head.getYDir();}
+	
+	public void setYDir(int y) {head.setYDir(y);}
+	
+	public void add(Amino a) {polyPoints.add(a);}
 	
 	public void draw(Graphics2D g2d) {
+		System.out.println("drawing head at " + head.getX() + " " + head.getY());
 		g2d.drawOval(head.getX(), head.getY(), SIZE, SIZE); //draw head
 		head.step();
 		
@@ -43,5 +49,4 @@ public class Polypeptide {
 			}
 		}
 	}
-	
 }

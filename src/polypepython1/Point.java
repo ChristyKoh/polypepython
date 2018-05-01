@@ -14,14 +14,14 @@ public class Point {
 		y = 0;
 		xdir = 0;
 		ydir = 0;
-		color = Color.white;
+		color = Color.black;
 	}
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
-		xdir = 1; //initially traveling right
+		xdir = 0;
 		ydir = 0;
-		color = Color.white;
+		color = Color.black;
 	}
 	public Point(int x, int y, Color c) {
 		this.x = x;
@@ -33,7 +33,7 @@ public class Point {
 	public Point(int x, int y, int xd, int yd, Color c) {
 		this.x = x;
 		this.y = y;
-		this.xdir = xd; //initially traveling right
+		this.xdir = xd;
 		this.ydir = yd;
 		this.color = c;
 	}
@@ -74,6 +74,8 @@ public class Point {
 	}
 	
 	public void step() {
+		System.out.println("adding " + this.getX() + " to " + this.getXDir()*4);
+		System.out.println("adding " + this.getY() + " to " + this.getYDir()*4);
 		this.setX(this.getX()+this.getXDir()*4);
 		this.setY(this.getY()+this.getYDir()*4);
 	}

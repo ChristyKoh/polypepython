@@ -8,19 +8,19 @@ import java.awt.Image;
 public class Amino extends Point {
 	private Image image = null;
 	private String name;
-	private final int SIZE = 4;
+	private final static int SIZE = 4;
 	
 	public Amino(String n) {
 		super();
 		this.name = n;
 	}
-	public Amino(String n, int x, int y, Color c) {
-		super(x,y,c);
+	public Amino(String n, Color c) {
+		super();
 		this.name = n;
 		this.color = c;
 	}
-	public Amino(String n, int x, int y, Image i) {
-		super(x,y);
+	public Amino(String n, Image i) {
+		super();
 		this.name = n;
 		this.image = i;
 	}
