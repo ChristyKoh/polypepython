@@ -91,7 +91,7 @@ class Surface extends JPanel implements ActionListener {
         
         //instantiate variables
         polly = new Polypeptide();
-        key = aminoList; //replace with desired protein list 
+        //key = aminoList; //replace with desired protein list 
         currAmino = 0;
         
         //initialize timer
@@ -119,11 +119,11 @@ class Surface extends JPanel implements ActionListener {
 			
 			//draw boundaries
 			g2d.setPaint(Color.black);
-			g2d.drawRect(0, 0, WIDTH, HEIGHT); //draw boundaries
+			g2d.drawRect(0, 0, WIDTH, HEIGHT+10); //draw boundaries
 			
 			//set up amino acid prompter
 			g2d.setPaint(Color.gray);
-			g2d.fillRect(0, HEIGHT, WIDTH, PROMPTHEIGHT);
+			g2d.fillRect(0, HEIGHT+10, WIDTH, PROMPTHEIGHT);
 			g2d.setPaint(Color.white);
 			g2d.drawString("Next amino acid: " + key.get(currAmino).getName(), PADDING, HEIGHT+PROMPTHEIGHT/2);
 			
@@ -138,7 +138,9 @@ class Surface extends JPanel implements ActionListener {
 				
 				//make sure no OutOfBoundsException happens
 				if(k+currAmino<key.size()) 
-					key.get(currAmino + k).drawImage(g2d);
+					//key.get(currAmino + k).drawImage(g2d);
+					key.get(currAmino + k).draw(g2d);
+
 			}
 			
 		} else {
