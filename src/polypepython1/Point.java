@@ -1,8 +1,11 @@
 package polypepython1;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Point {
+	public final static int SIZE = 8;
 	protected int x;
 	protected int y;
 	private int xdir;
@@ -73,11 +76,21 @@ public class Point {
 		return this.color;
 	}
 	
+	/*
+	 * Draws a point as a filled circle.
+	 */
+	public void draw(Graphics g2d) {
+		g2d.setColor(color); //set to color of amino acid
+		g2d.fillOval(x, y, SIZE, SIZE);
+	}
+	
+	/*
+	 * Increments x and y values of points based on the direction each 
+	 * segment of the snake is travelling.
+	 */
 	public void step() {
-		System.out.println("adding " + this.getX() + " to " + this.getXDir()*4);
-		System.out.println("adding " + this.getY() + " to " + this.getYDir()*4);
-		this.setX(this.getX()+this.getXDir()*4);
-		this.setY(this.getY()+this.getYDir()*4);
+		this.setX(this.getX()+this.getXDir()*SIZE);
+		this.setY(this.getY()+this.getYDir()*SIZE);
 	}
 	
 	public boolean equals(int x, int y) {

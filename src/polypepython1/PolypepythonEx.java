@@ -26,7 +26,7 @@ public class PolypepythonEx extends JFrame{
 		});
 		
 		setTitle("Polypepython!");
-		setSize(1000,500);
+		setSize(500,550);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

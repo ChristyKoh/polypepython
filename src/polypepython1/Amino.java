@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.ImageObserver;
 
 public class Amino extends Point {
-	private Image image = null;
+	private Image image;
 	private String name;
-	private final static int SIZE = 4;
 	
 	public Amino(String n) {
 		super();
@@ -19,24 +19,27 @@ public class Amino extends Point {
 		this.name = n;
 		this.color = c;
 	}
-	public Amino(String n, Image i) {
+	public Amino(String n, Color c, Image i) {
 		super();
 		this.name = n;
+		this.color = c;
 		this.image = i;
+		System.out.println( n + " has an image.");
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public void draw(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(color); //set to color of amino acid
+	public void drawImage(Graphics2D g2d) {
+		System.out.println(image);
 		if(image != null) {
-			//TODO draw image
+			System.out.println("drawing image");
+			g2d.drawImage(image, x, y, (ImageObserver)this);
 		}
 		else {
-			g2d.drawOval(x, y, SIZE, SIZE);
+			//System.out.println("drawing circle");
+			this.draw(g2d);
 		}
 	}
 	
