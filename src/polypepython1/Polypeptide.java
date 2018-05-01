@@ -80,6 +80,6 @@ public class Polypeptide{
 		}
 		head.step();
 		g2d.setPaint(head.getColor());
-		g2d.drawOval(head.getX(), head.getY(), SIZE, SIZE); //draw head
+		g2d.fillOval(head.getX(), head.getY(), SIZE, SIZE); //draw head
 	}
 }

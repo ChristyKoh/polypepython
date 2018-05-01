@@ -31,11 +31,16 @@ public class Amino extends Point {
 		return this.name;
 	}
 	
+	public Image getImage() {
+		return this.image;
+	}
+	
 	public void drawImage(Graphics2D g2d) {
-		System.out.println(image);
+		//System.out.println(image);
 		if(image != null) {
-			System.out.println("drawing image");
-			g2d.drawImage(image, x, y, (ImageObserver)this);
+			System.out.println("drawing image at "+x +" " +y);
+			g2d.drawImage(image, x, y, null);
+			//g2d.drawImage(image, x, y, x+15, y+30, 0, 0,  image.getWidth(null), image.getHeight(null), null);
 		}
 		else {
 			//System.out.println("drawing circle");

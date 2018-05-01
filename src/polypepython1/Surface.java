@@ -49,30 +49,7 @@ class Surface extends JPanel implements ActionListener {
 	gln, gly, his, ile, leu, lys, met, phe, pro, 
 	sec, ser, thr, trp, tyr, val;
 	
-	private ArrayList<Amino> aminoList = new ArrayList<Amino>() {{
-		add(ala);
-		add(arg);
-		add(asn);
-		add(asp);
-		add(cys);
-		add(glu);
-		add(gln);
-		add(gly);
-		add(his);
-		add(ile);
-		add(leu);
-		add(lys);
-		add(met);
-		add(phe);
-		add(pro);
-		add(sec);
-		add(ser);
-		add(thr);
-		add(trp);
-		add(tyr);
-		add(val);
-	}};
-	
+	private ArrayList<Amino> aminoList;
 	private ArrayList<Amino> insulin;
 	//TODO add more polypeptide keys
 	
@@ -138,8 +115,8 @@ class Surface extends JPanel implements ActionListener {
 				
 				//make sure no OutOfBoundsException happens
 				if(k+currAmino<key.size()) 
-					//key.get(currAmino + k).drawImage(g2d);
-					key.get(currAmino + k).draw(g2d);
+					key.get(currAmino + k).drawImage(g2d);
+					//key.get(currAmino + k).draw(g2d);
 
 			}
 			
@@ -149,41 +126,117 @@ class Surface extends JPanel implements ActionListener {
 		
 	}
 	
-	
+	/*
+	 * Loads amino acid images from their respective files.
+	 */
 	private void loadImages() {
-
-	    ImageIcon iid = new ImageIcon("src/images/Nonpolar/Glycine.png");
+	    
+		//NONPOLAR Molecules
+		ImageIcon iid = new ImageIcon("src/polypepython1/images/Nonpolar/Alanine.png");
+	    alaImg = iid.getImage();
+	    
+	    iid = new ImageIcon("src/polypepython1/images/Nonpolar/Glycine.png");
 	    glyImg = iid.getImage();
+	    
+	    iid = new ImageIcon("src/polypepython1/images/Nonpolar/Isoleucine.png");
+	    ileImg = iid.getImage();
+	    
+	    iid = new ImageIcon("src/polypepython1/images/Nonpolar/Leucine.png");
+	    leuImg = iid.getImage();
+	    
+	    iid = new ImageIcon("src/polypepython1/images/Nonpolar/Methionine.png");
+	    metImg = iid.getImage();
+	    
+	    iid = new ImageIcon("src/polypepython1/images/Nonpolar/Proline.png");
+	    proImg = iid.getImage();
+	    
+	    iid = new ImageIcon("src/polypepython1/images/Nonpolar/Valine.png");
+	    valImg = iid.getImage();
+	    
+	    //POLAR Molecules
+	    ImageIcon iip = new ImageIcon("src/polypepython1/images/Polar/Asparagine.png");
+	    asnImg = iip.getImage();
+	    
+	    iip = new ImageIcon("src/polypepython1/images/Polar/Cysteine.png");
+	    cysImg = iip.getImage();
+	    
+	    iip = new ImageIcon("src/polypepython1/images/Polar/Glutamine.png");
+	    glnImg = iip.getImage();
+	    
+	    iip = new ImageIcon("src/polypepython1/images/Polar/Serine.png");
+	    serImg = iip.getImage();
+	    
+	    iip = new ImageIcon("src/polypepython1/images/Polar/Threonine.png");
+	    thrImg = iip.getImage();
+	    
+	    //ACIDIC Molecules
+	    ImageIcon iia = new ImageIcon("src/polypepython1/images/Acidic/Aspartate.png");
+	    aspImg = iia.getImage();
+	    
+	    iia = new ImageIcon("src/polypepython1/images/Acidic/Glutamate.png");
+	    gluImg = iia.getImage();
+	    
+	    //BASIC Molecules
+	    ImageIcon iib = new ImageIcon("src/polypepython1/images/Basic/Arginine.png");
+	    argImg = iib.getImage();
+	    
+	    iib = new ImageIcon("src/polypepython1/images/Basic/Lysine.png");
+	    lysImg = iib.getImage();
+	    
 	    
 	    //TODO add the rest of the images
 	    
 	}
 	
 	private void initAminos() {
-		ala = new Amino("alanine", npol);
-		arg = new Amino("arginine", base);
-		asn = new Amino("asparagine", pol);
-		asp = new Amino("aspartic acid", acid);
-		cys = new Amino("cysteine", pol);
-		glu = new Amino("glutamic acid", acid);
-		gln = new Amino("glutamine", pol);
-		gly = new Amino("glycine", npol, glyImg);
-		his = new Amino("histidine", base);
-		ile = new Amino("isoleucine", npol);
-		leu = new Amino("leucine", npol);
-		lys = new Amino("lysine", base);
-		met = new Amino("methionine", npol);
-		phe = new Amino("phenylalanine", npol);
-		pro = new Amino("proline", npol);
-		sec = new Amino("selenocysteine", acid); //double check this
-		ser = new Amino("serine", pol);
-		thr = new Amino("threonine", pol);
-		trp = new Amino("tryptophan", npol);
-		tyr = new Amino("tyrosine", pol);
-		val = new Amino("valine", npol);
+		ala = new Amino("Alanine", npol, alaImg);
+		arg = new Amino("Arginine", base, argImg);
+		asn = new Amino("Asparagine", pol, asnImg);
+		asp = new Amino("Aspartic acid", acid, aspImg);
+		cys = new Amino("Cysteine", pol, cysImg);
+		glu = new Amino("Glutamic acid", acid, gluImg);
+		gln = new Amino("Glutamine", pol, glnImg);
+		gly = new Amino("Glycine", npol, glyImg);
+		his = new Amino("Histidine", base, hisImg);
+		ile = new Amino("Isoleucine", npol, ileImg);
+		leu = new Amino("Leucine", npol, leuImg);
+		lys = new Amino("Lysine", base, lysImg);
+		met = new Amino("Methionine", npol, metImg);
+		phe = new Amino("Phenylalanine", npol, pheImg);
+		pro = new Amino("Proline", npol, proImg);
+		sec = new Amino("Selenocysteine", acid, secImg); //double check this
+		ser = new Amino("Serine", pol, serImg);
+		thr = new Amino("Threonine", pol, thrImg);
+		trp = new Amino("Tryptophan", npol, trpImg);
+		tyr = new Amino("Tyrosine", pol, tyrImg);
+		val = new Amino("Valine", npol, valImg);
 	}
 	
 	private void initKeys() {
+		aminoList = new ArrayList<Amino>() {{
+			add(ala);
+			add(arg);
+			add(asn);
+			add(asp);
+			add(cys);
+			add(glu);
+			add(gln);
+			add(gly);
+			add(his);
+			add(ile);
+			add(leu);
+			add(lys);
+			add(met);
+			add(phe);
+			add(pro);
+			add(sec);
+			add(ser);
+			add(thr);
+			add(trp);
+			add(tyr);
+			add(val);
+		}};
+		
 		insulin = new ArrayList<Amino>() {{
 			add(gly);
 			add(ile);
@@ -216,8 +269,10 @@ class Surface extends JPanel implements ActionListener {
 	 */
 	private void checkAmino() {
 		//if the head is in the same position as an amino acid
-		if(polly.getX() == key.get(currAmino).getX() &&
-				polly.getY() == key.get(currAmino).getY()) {
+		Amino c = key.get(currAmino);
+		if(polly.getX() >= c.getX() && polly.getY() >= c.getY() &&
+				polly.getX() <= c.getImage().getWidth(null)+c.getX() &&
+				polly.getY() <= c.getImage().getHeight(null)+c.getY()) {
 			
 			//append current Amino object onto the polypeptide
 			polly.add(key.get(currAmino));
