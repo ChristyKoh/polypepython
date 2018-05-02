@@ -35,7 +35,11 @@ public class Polypeptide{
 	
 	public void setYDir(int y) {head.setYDir(y);}
 	
-	public void add(Amino a) {polyPoints.add(a);}
+	public void add(Amino a) {
+		Amino m = new Amino(a.getName(), a.getColor());
+		polyPoints.add(m);
+		a.hideImage();
+	}
 	
 	public boolean hasCollision(int w, int h) {
 		if(head.getX() < 0 || head.getY() < 0) {
@@ -79,7 +83,7 @@ public class Polypeptide{
 			a.draw(g2d);
 		}
 		head.step();
-		g2d.setPaint(head.getColor());
-		g2d.fillOval(head.getX(), head.getY(), SIZE, SIZE); //draw head
+		head.draw(g2d);
+		
 	}
 }

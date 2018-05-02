@@ -22,8 +22,8 @@ import javax.swing.Timer;
 
 class Surface extends JPanel implements ActionListener {
 	
-	private boolean inGame = true;
-	public final static int DELAY = 100, PADDING = 50, 
+	private boolean inGame = true, showPrompt = false;
+	public final static int DELAY = 50, PADDING = 50, 
 			WIDTH = 500, HEIGHT = 400, SIZE = 8,
 			PROMPTHEIGHT = 50;
 	private Timer timer;
@@ -69,7 +69,6 @@ class Surface extends JPanel implements ActionListener {
         //instantiate variables
         polly = new Polypeptide();
         //key = aminoList; //replace with desired protein list 
-        currAmino = 0;
         
         //initialize timer
         timer = new Timer(DELAY, this);
@@ -80,52 +79,23 @@ class Surface extends JPanel implements ActionListener {
 		for(Amino a: key) {
 			a.setX(r.nextInt((WIDTH-2*PADDING)/SIZE)*SIZE + PADDING); //make sure coordinates are a multiple of SIZE
 			a.setY(r.nextInt((HEIGHT-2*PADDING)/SIZE)*SIZE + PADDING);
-			//System.out.println(a.getName() + " is located at " + a.getX() + " " + a.getY());
 		}
-	}
-	
-	public Timer getTimer() {
-		return this.timer;
-	}
-
-	private void doDrawing(Graphics g) {
 		
-		Graphics2D g2d = (Graphics2D) g;
-		
-		if (inGame){
-			
-			//draw boundaries
-			g2d.setPaint(Color.black);
-			g2d.drawRect(0, 0, WIDTH, HEIGHT+10); //draw boundaries
-			
-			//set up amino acid prompter
-			g2d.setPaint(Color.gray);
-			g2d.fillRect(0, HEIGHT+10, WIDTH, PROMPTHEIGHT);
-			g2d.setPaint(Color.white);
-			g2d.drawString("Next amino acid: " + key.get(currAmino).getName(), PADDING, HEIGHT+PROMPTHEIGHT/2);
-			
-			//draw polypeptide
-			g2d.setPaint(Color.blue);
-			polly.draw(g2d);
-	
-			//draw 5 next amino acids
-			for(int k=0; k<5; k++) {
-				
-				//TODO check if random amino position is on polypeptide
-				
-				//make sure no OutOfBoundsException happens
-				if(k+currAmino<key.size()) 
-					key.get(currAmino + k).drawImage(g2d);
-					//key.get(currAmino + k).draw(g2d);
-
+		//make sure first five amino acids are not overlapping
+		for(currAmino = 1; currAmino<5; currAmino++) {
+			Amino c = key.get(currAmino);
+			while(isColliding()) {
+				c.setX(r.nextInt((WIDTH-2*PADDING)/SIZE)*SIZE + PADDING); //make sure coordinates are a multiple of SIZE
+				c.setY(r.nextInt((HEIGHT-2*PADDING)/SIZE)*SIZE + PADDING);
 			}
-			
-		} else {
-			gameOver(g2d);
 		}
+		
+
+        currAmino = 0; //reset at the first index
 		
 	}
 	
+
 	/*
 	 * Loads amino acid images from their respective files.
 	 */
@@ -243,13 +213,13 @@ class Surface extends JPanel implements ActionListener {
 			add(val);
 			add(glu);
 			add(gln);
-			add(cys);
-			add(cys);
+			//add(cys); //image not implemented yet
+			//add(cys);
 			add(thr);
-			add(ser);
+			//add(ser);
 			add(ile);
-			add(cys);
-			add(ser);
+			//add(cys);
+			//add(ser);
 			add(leu);
 			add(tyr);
 			add(gln);
@@ -262,6 +232,47 @@ class Surface extends JPanel implements ActionListener {
 		key = insulin;
 	}
 	
+	public Timer getTimer() {
+		return this.timer;
+	}
+
+	private void doDrawing(Graphics g) {
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		if (inGame){
+			
+			//draw boundaries
+			g2d.setPaint(Color.black);
+			g2d.drawRect(0, 0, WIDTH, HEIGHT+10); //draw boundaries
+			
+			//set up amino acid prompter
+			g2d.setPaint(Color.gray);
+			g2d.fillRect(0, HEIGHT+10, WIDTH, PROMPTHEIGHT);
+			g2d.setPaint(Color.white);
+			g2d.drawString("Next amino acid: " + key.get(currAmino).getName(), PADDING, HEIGHT+PROMPTHEIGHT/2);
+			g2d.drawImage(key.get(currAmino).getImage(), WIDTH/2, HEIGHT+20, null);
+			
+			//draw polypeptide
+			g2d.setPaint(Color.blue);
+			polly.draw(g2d);
+	
+			//draw 5 next amino acids
+			for(int k=0; k<5; k++) {
+				
+				//make sure no OutOfBoundsException happens
+				if(k+currAmino<key.size()) {
+					key.get(currAmino+k).showImage(); //make sure image is showing
+					key.get(currAmino + k).drawImage(g2d);
+				}
+			}
+			
+		} else {
+			gameOver(g2d);
+		}
+		
+	}
+	
 	/*
 	 * Checks to see if polypeptide is touching an amino acid. This method will
 	 * lengthen the polypeptide and make the consumed amino disappear if they
@@ -269,19 +280,71 @@ class Surface extends JPanel implements ActionListener {
 	 */
 	private void checkAmino() {
 		//if the head is in the same position as an amino acid
+		//if all amino acids have been collected, end game
+
 		Amino c = key.get(currAmino);
-		if(polly.getX() >= c.getX() && polly.getY() >= c.getY() &&
+		boolean hit = false;
+		if(c.getImage() == null) {
+			if(polly.getX() == c.getX() && polly.getY() == c.getY()) hit = true;
+		}
+		else {
+			if (polly.getX() >= c.getX() && polly.getY() >= c.getY() &&
 				polly.getX() <= c.getImage().getWidth(null)+c.getX() &&
 				polly.getY() <= c.getImage().getHeight(null)+c.getY()) {
-			
-			//append current Amino object onto the polypeptide
-			polly.add(key.get(currAmino));
-			currAmino++;
-			
-			//if all amino acids have been collected, end game
-			if (currAmino == key.size()) inGame = false; 
+				
+				hit = true;
+			}
 		}
 		
+		if(hit) {
+			Random r = new Random();
+			//append current Amino object onto the polypeptide
+			polly.add(c);
+			currAmino++;
+			
+			if (currAmino == key.size()) {
+				inGame = false;
+				return;
+			}
+			
+			//randomize coordinates if amino acid appears again
+			c.setX(r.nextInt((WIDTH-2*PADDING)/SIZE)*SIZE + PADDING); //make sure coordinates are a multiple of SIZE
+			c.setY(r.nextInt((HEIGHT-2*PADDING)/SIZE)*SIZE + PADDING);
+			
+			//make sure the next image is not overlapping with any other image
+			//Amino a = polly.get().get(currAmino);
+			c = key.get(currAmino);
+			while(isColliding()) {
+				c.setX(r.nextInt((WIDTH-2*PADDING)/SIZE)*SIZE + PADDING); //make sure coordinates are a multiple of SIZE
+				c.setY(r.nextInt((HEIGHT-2*PADDING)/SIZE)*SIZE + PADDING);
+			}
+		}
+		
+	}
+	
+	private boolean isColliding() {
+		Amino c = key.get(currAmino);
+		if(currAmino < 5) {
+			//for each of the 4 amino acids before the current one
+			for(int j=0; j < ((currAmino==0) ? 1 :(currAmino-1)); j++) { //not inclusive of currAmino itself
+				Amino a = key.get(j);
+				if(c.getX() > a.getX() - c.getWidth() || c.getX() < a.getX() + a.getWidth()
+				|| c.getY() > a.getY() - c.getHeight() || c.getY() < a.getY() + a.getHeight()) {
+					return true;
+				}
+			}
+		}
+		else {
+			for(int j=currAmino-5; j<currAmino-1; j++) {
+				Amino a = key.get(j);
+				if(c.getX() > a.getX() - c.getWidth() || c.getX() < a.getX() + a.getWidth()
+				|| c.getY() > a.getY() - c.getHeight() || c.getY() < a.getY() + a.getHeight()) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	/*
